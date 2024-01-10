@@ -38,3 +38,7 @@ string message = SharedQueueManager.Dequeue();
 Console.WriteLine(message);
 
 ```
+
+# Links
+
+[Github Repository](https://github.com/nataliaRabelo/SharedMemoryQueue/tree/master)
