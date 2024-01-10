@@ -38,3 +38,6 @@ string message = SharedQueueManager.Dequeue();
 Console.WriteLine(message);
 
 ```
+# Links
+
+[Nuget Package](https://www.nuget.org/packages/SharedQueueManager)
