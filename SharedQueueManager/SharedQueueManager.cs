@@ -2,30 +2,33 @@
 
 namespace SharedQueueManager
 {
-    public static class SharedQueueManager
+    public class SharedMemoryQueue
     {
-        [DllImport("libs/SharedQueue.dll")]
-        private static extern void enqueue(string message);
+        private string _queueName;
 
-        [DllImport("libs/SharedQueue.dll")]
-        private static extern IntPtr dequeue();
-
-        [DllImport("libs/SharedQueue.dll")]
-        private static extern void free_memory(IntPtr ptr);
-
-        public static void Enqueue(string message)
+        public SharedMemoryQueue(string queueName)
         {
-            enqueue(message);
+            _queueName = queueName;
         }
 
-        public static string Dequeue()
+        [DllImport("libs/SharedQueue.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void enqueue(string queueName, string message);
+
+        [DllImport("libs/SharedQueue.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr dequeue(string queueName);
+
+        public void Enqueue(string message)
         {
-            var ptr = dequeue();
+            enqueue(_queueName, message);
+        }
+
+        public string Dequeue()
+        {
+            var ptr = dequeue(_queueName);
             if (ptr == IntPtr.Zero)
                 return null;
 
             var message = Marshal.PtrToStringAnsi(ptr);
-            free_memory(ptr);
             return message;
         }
     }

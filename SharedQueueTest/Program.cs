@@ -1,28 +1,22 @@
-﻿namespace SharedQueueTest
+﻿using SharedQueueManager;
+
+namespace SharedQueueTest
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Testando o enfileiramento de mensagens
-            Console.WriteLine("Enfileirando mensagens...");
-            SharedQueueManager.SharedQueueManager.Enqueue("Hello, World!");
-            SharedQueueManager.SharedQueueManager.Enqueue("This is a test message.");
+            // Creating two separate queues
+            var queue1 = new SharedMemoryQueue("Queue1");
+            var queue2 = new SharedMemoryQueue("Queue2");
 
-            // Testando o desenfileiramento de mensagens
-            Console.WriteLine("Desenfileirando mensagens...");
-            string message1 = SharedQueueManager.SharedQueueManager.Dequeue();
-            Console.WriteLine($"Mensagem recebida: {message1}");
+            // Enqueueing messages on different queues
+            queue1.Enqueue("Message for Queue 1");
+            queue2.Enqueue("Message for Queue 2");
 
-            string message2 = SharedQueueManager.SharedQueueManager.Dequeue();
-            Console.WriteLine($"Mensagem recebida: {message2}");
-
-            // Tentando desenfileirar com a fila vazia
-            string message3 = SharedQueueManager.SharedQueueManager.Dequeue();
-            if (message3 == null)
-            {
-                Console.WriteLine("Nenhuma mensagem para desenfileirar. Fila vazia.");
-            }
+            // Dequeueing messages from the queues
+            Console.WriteLine(queue1.Dequeue()); // Should print "Message for Queue 1"
+            Console.WriteLine(queue2.Dequeue()); // Should print "Message for Queue 2"
         }
     }
 }

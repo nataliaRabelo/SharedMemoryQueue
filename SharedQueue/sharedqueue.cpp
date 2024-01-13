@@ -1,30 +1,30 @@
 #include "pch.h"
+#include <map>
 #include <queue>
 #include <string>
 #include <mutex>
 
-std::queue<std::string> queue;
+std::map<std::string, std::queue<std::string>> queues;
 std::mutex mutex;
 
 extern "C" {
-    __declspec(dllexport) void enqueue(const char* message) {
+    __declspec(dllexport) void enqueue(const char* queueName, const char* message) {
         std::lock_guard<std::mutex> lock(mutex);
-        queue.push(std::string(message));
+        queues[queueName].push(std::string(message));
     }
 
-    __declspec(dllexport) char* dequeue() {
-        std::lock_guard<std::mutex> lock(mutex);
-        if (!queue.empty()) {
-            auto message = queue.front();
-            queue.pop();
-            char* cstr = new char[message.length() + 1];
-            strcpy_s(cstr, message.length() + 1, message.c_str());
-            return cstr;
+    __declspec(dllexport) const char* dequeue(const char* queueName) {
+        static std::string message;
+        {
+            std::lock_guard<std::mutex> lock(mutex);
+            if (queues.find(queueName) != queues.end() && !queues[queueName].empty()) {
+                message = queues[queueName].front();
+                queues[queueName].pop();
+            }
+            else {
+                message.clear();
+            }
         }
-        return nullptr;
-    }
-
-    __declspec(dllexport) void free_memory(char* ptr) {
-        delete[] ptr;
+        return message.empty() ? nullptr : message.c_str();
     }
 }
