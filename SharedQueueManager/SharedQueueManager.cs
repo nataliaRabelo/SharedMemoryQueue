@@ -11,10 +11,10 @@ namespace SharedQueueManager
             _queueName = queueName;
         }
 
-        [DllImport("libs/SharedQueue.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("SharedQueue.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void enqueue(string queueName, string message);
 
-        [DllImport("libs/SharedQueue.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("SharedQueue.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr dequeue(string queueName);
 
         public void Enqueue(string message)

@@ -3,17 +3,17 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>1.0.5</Version>
+		<Version>1.0.6</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Authors>Natália Bruno Rabelo</Authors>
 		<Description>SharedQueueManager is a .NET library providing shared memory message queue functionalities. It facilitates communication and data transfer between different parts of an application or different applications, encapsulating the complexities of shared memory management and offering a straightforward interface for enqueueing and dequeueing messages.</Description>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="libs\SharedQueue.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="LICENSE" Pack="true" PackagePath=""/>
-		<None Include="README.md" Pack="true" PackagePath=""/>
+		<None Include="LICENSE" Pack="true" PackagePath="" />
+		<None Include="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="runtimes/win-x64/native/SharedQueue.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
 	</ItemGroup>
 </Project>
