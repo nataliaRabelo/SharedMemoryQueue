@@ -1,4 +1,5 @@
-#include "pch.h"
+// shared_queue.cpp
+
 #include <map>
 #include <queue>
 #include <string>
@@ -8,12 +9,12 @@ std::map<std::string, std::queue<std::string>> queues;
 std::mutex mutex;
 
 extern "C" {
-    __declspec(dllexport) void enqueue(const char* queueName, const char* message) {
+    void enqueue(const char* queueName, const char* message) {
         std::lock_guard<std::mutex> lock(mutex);
         queues[queueName].push(std::string(message));
     }
 
-    __declspec(dllexport) const char* dequeue(const char* queueName) {
+    const char* dequeue(const char* queueName) {
         static std::string message;
         {
             std::lock_guard<std::mutex> lock(mutex);
